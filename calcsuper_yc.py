@@ -45,9 +45,16 @@ def main():
 
     df_disburse, df_payslip, df_paycodes = read_file(path, filename)
     
-    # print(df_paycodes)
-    calc_ote(df_payslip, df_paycodes)
-    calc_disb(df_disburse)
+    df_ote = calc_ote(df_payslip, df_paycodes)
+    df_disbursed = calc_disb(df_disburse)
+
+    df_final = pd.merge(df_ote, df_disbursed, how='outer', on=['employee_code','year','quarter'])
+    df_final = df_final.fillna(0)
+    df_final.loc[:,'Variance'] = df_final['Super Payable'] - df_final['Total Disbursed']
+    df_final.to_csv(os.path.join(path,'results.csv', index=False))
+    
+    print(f"Results saved to {os.path.join(path,'results.csv')}")
+    print("Done!")
 """
 This module allows the calculation of the OTE and payable super
 """
@@ -68,7 +75,7 @@ def calc_ote(df_payslip, df_paycodes):
     df_payslip_ote_sum = df_payslip_ote_sum.rename(columns={'amount':'Total OTE'})
 
     df_payslip_ote_sum.loc[:,'Super Payable'] = df_payslip_ote_sum['Total OTE'] * 0.095
-    
+
     return df_payslip_ote_sum
 
 """
@@ -82,7 +89,7 @@ def calc_disb(df_disburse):
     df_disburse_sum = df_disburse.groupby(['employee_code','year','quarter']).agg({'sgc_amount':'sum'}).reset_index()
     df_disburse_sum = df_disburse_sum.rename(columns={'sgc_amount':'Total Disbursed'})
 
-    df_disburse_sum.to_csv('temp1.csv', index=False)
+    return df_disburse_sum
 
 
 if __name__ == "__main__":
