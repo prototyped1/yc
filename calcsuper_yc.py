@@ -53,7 +53,7 @@ def main():
 
     df_final = pd.merge(df_ote, df_disbursed, how='outer', on=['employee_code','year','quarter'])
     df_final = df_final.fillna(0)
-    df_final.loc[:,'Variance'] = df_final['Super Payable'] - df_final['Total Disbursed']
+    df_final.loc[:,'Variance'] = df_final['Super Payable'].round(2) - df_final['Total Disbursed'].round(2)
     df_final.to_csv(os.path.join(path,'results.csv'), index=False)
 
     print(f"Results saved to {os.path.join(path,'results.csv')}")
@@ -73,11 +73,10 @@ def calc_ote(df_payslip, df_paycodes):
     df_payslip_ote.loc[:,'year'] = df_payslip_ote['date'].dt.year
     df_payslip_ote.loc[:,'quarter'] = (df_payslip_ote['date'].dt.month-1)%12//3+1
 
-    df_payslip_ote.to_csv('temp_ote.csv', index=False)
     df_payslip_ote_sum = df_payslip_ote.groupby(['employee_code','year','quarter']).agg({'amount':'sum'}).reset_index()
     df_payslip_ote_sum = df_payslip_ote_sum.rename(columns={'amount':'Total OTE'})
 
-    df_payslip_ote_sum.loc[:,'Super Payable'] = df_payslip_ote_sum['Total OTE'] * SUPER_RATE
+    df_payslip_ote_sum.loc[:,'Super Payable'] = (df_payslip_ote_sum['Total OTE'] * SUPER_RATE).round(2)
 
     return df_payslip_ote_sum
 
