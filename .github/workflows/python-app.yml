@@ -9,17 +9,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-  workflow_dispatch:
-    inputs:
-      filepath:
-        description: 'Path to the input file (e.g., data/)'
-        required: true
-        default: 'data/'
-      filename:
-        description: 'Name of the input file (e.g., Sample Super Data2.xlsx)'
-        required: true
-        default: 'Sample Super Data2.xlsx'
-
 permissions:
   contents: read
 
@@ -58,4 +47,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: super-results
-        path: ./output_action/
+        path: ./output_action/results.csv
