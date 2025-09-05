@@ -50,6 +50,6 @@ jobs:
       run: |
         pytest || echo "No tests found"
 
-    - name: Run calcsuper.py with fixed file path and name
+    - name: Run calcsuper_yc.py with fixed file path and name
       run: |
-        python calcsuper.py
+        python calcsuper_yc.py "./data/Sample Super Data2.xlsx"
