@@ -47,4 +47,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: super-results
-        path: ./output_action/results.csv
+        path: ./data/results.csv
