@@ -52,4 +52,4 @@ jobs:
 
     - name: Run calcsuper_yc.py with fixed file path and name
       run: |
-        python calcsuper_yc.py "./data/Sample Super Data2.xlsx"
+        python calcsuper_yc.py --filepath "./data/" --filename "Sample Super Data2.xlsx"

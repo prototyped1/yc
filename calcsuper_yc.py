@@ -2,6 +2,7 @@
 
 import sys
 import os
+import argparse
 import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
 
@@ -34,18 +35,30 @@ This module handles CLI inputs and outputs
 """
 def main():
     print("This is a pipeline for calculating super.\n")
-    print("Please enter your file path (ENTER for default):")
-    print("Default path: ./data/\n")
+   
+    parser = argparse.ArgumentParser(description="Calculate superannuation from a file.")
+    parser.add_argument("--filepath", help="Path to the input file (e.g., ./data/)")
+    parser.add_argument("--filename", help="Name of the input file (e.g., Sample Super Data.xlsx)")
+    args = parser.parse_args()
 
-    path = input()
-    if path == "":
-        path = "./data/"
+    # If arguments are missing, fall back to interactive prompts
+    if not args.filepath:
+        print("Please enter your file path (ENTER for default):")
+        print("Default path: ./data/\n")
+        path = input()
+        if path == "":
+            path = "./data/"
+    else:
+        path = args.filepath
 
-    print("Please enter your filename (ENTER for default):")
-    print("Default filename: Sample Super Data.xlsx\n")
-    filename = input()
-    if filename == "":
-        filename = "Sample Super Data.xlsx"
+    if not args.filename:
+        print("Please enter your filename (ENTER for default):")
+        print("Default filename: Sample Super Data.xlsx\n")
+        filename = input()
+        if filename == "":
+            filename = "Sample Super Data.xlsx"
+    else:
+        filename = args.filename
 
     df_disburse, df_payslip, df_paycodes = read_file(path, filename)
     
