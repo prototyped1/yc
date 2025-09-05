@@ -53,3 +53,9 @@ jobs:
     - name: Run calcsuper_yc.py with fixed file path and name
       run: |
         python calcsuper_yc.py --filepath "./data/" --filename "Sample Super Data2.xlsx"
+    
+    - name: Upload output files
+      uses: actions/upload-artifact@v4
+      with:
+        name: super-results
+        path: ./data/
