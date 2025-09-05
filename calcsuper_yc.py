@@ -3,6 +3,7 @@
 import sys
 import os
 import pandas as pd
+pd.options.mode.chained_assignment = None  # default='warn'
 
 SUPER_RATE = 0.095
 """
